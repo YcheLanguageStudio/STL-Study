@@ -1,0 +1,1 @@
+add_executable(YcheAllocator YcheAllocator.h YcheAllocator.cpp)

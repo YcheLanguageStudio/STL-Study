@@ -8,3 +8,4 @@ add_executable(STLStudy ${SOURCE_FILES})
 
 add_subdirectory(STLPuzzlingConfig)
 add_subdirectory(OtherPuzzlingPoints)
+add_subdirectory(Allocator)
