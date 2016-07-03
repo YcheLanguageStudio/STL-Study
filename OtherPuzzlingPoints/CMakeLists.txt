@@ -1,0 +1,4 @@
+add_executable(UnamedObject UnnamedObjects.cpp)
+add_executable(StaticConstantInteger In-ClassStaticConstantInteger.cpp)
+add_executable(IteratorDeference IteratorDeference.cpp)
+add_executable(Functor Funcotr.cpp)
