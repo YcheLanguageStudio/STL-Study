@@ -1,6 +1,6 @@
 ###各种Configurations
-- Config3 __STL_STATIC_TEMPLATE_MEMBER_BUG
-- Config5 __STL_CLASS_PARTIAL_SPECIALIZATION
+- Config3 [__STL_STATIC_TEMPLATE_MEMBER_BUG](./StaticTemplateMember.cpp)
+- Config5 [__STL_CLASS_PARTIAL_SPECIALIZATION](./ClassPartialSpecialization.cpp)
 - Config6 __STL_FUNCTION_TMPL_PARTIAL_ORDER
 - Config7 __STL_EXPLICIT_FUNCTION_TMPL_ARGS(几乎没有用到)
 - Config8 __STL_MEMBER_TEMPLATES
