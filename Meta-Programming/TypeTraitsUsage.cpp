@@ -5,6 +5,8 @@
 #include <boost/type_traits.hpp>
 #include "MetaFunctionTool.h"
 #include <vector>
+#include <deque>
+
 using namespace boost;
 
 
@@ -51,4 +53,19 @@ int main() {
     assert(mp_eval(is_member_function_pointer<void(dummy::*)(int)>));
 
     //元数据类别2
+    assert(mp_eval(is_reference<float&>));
+    assert(mp_eval(is_reference<float&&>));
+    assert(mp_eval(is_reference<std::deque<int> const &>)); //容器常引用
+
+    assert(mp_eval(is_arithmetic<char>));  //char是算术类型
+    assert(mp_eval(is_arithmetic<float volatile>));
+    assert(!mp_eval(is_arithmetic<void const>)); //void 不是算术类型
+    assert(mp_eval(is_fundamental<void const>)); //void 是基本类型
+    assert(mp_eval(is_member_pointer<int(dummy::*)>));  //成员指针
+
+    assert(mp_eval(is_compound<std::string>));  //标准字符串是复合类型
+    assert(mp_eval(is_object<std::string>));  //标准字符串是对象类型
+
+    assert(mp_eval(is_scalar<int>)); //int 是标量类型
+    assert(!mp_eval(is_scalar<std::vector<int>>)); //标准容器不是标量类型
 }
