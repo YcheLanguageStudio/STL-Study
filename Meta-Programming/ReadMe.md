@@ -12,4 +12,5 @@
 ###例子
 - [Basic Intro of Meta-Programming](MetaFunction.cpp)
 - [Meta-Function Forward](MetaFunctionForward.cpp)
-- [Small Demo Case MetaFunction Util](MetaFunctionTool.cpp) [Util header](MetaFunctionTool.h)
+- [Small Demo Case MetaFunction Util](MetaFunctionTool.cpp)
+  [Util header](MetaFunctionTool.h)
