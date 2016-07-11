@@ -14,6 +14,7 @@
         - 检查元数据属性的值的元函数： 以::value返回一个bool值或一个证书
         - 操作元数据的标准元函数： 以::type返回一个新的元数据（类型）
     - 以is或has开头的元函数都属于值元函数，其他属于标准元函数，一些有例外
+    
 ###例子
 - [Basic Intro of Meta-Programming](MetaFunction.cpp)
 - [Meta-Function Forward](MetaFunctionForward.cpp)
