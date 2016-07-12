@@ -1,5 +1,8 @@
 add_executable(Config3 StaticTemplateMember.cpp)
 add_executable(Config5 ClassPartialSpecialization.cpp)
+add_executable(Config6 FunctionTmplPartialOrder.cpp)
+add_executable(Config8 MemberTemplate.cpp)
+add_executable(Config10 LimitedDefaultTmpl.cpp)
 add_executable(Config11 NonTypeTmplParam.cpp)
 add_executable(Config12 BoundFriendTemplate.cpp)
 add_executable(Config13 TemplateNull.cpp)
