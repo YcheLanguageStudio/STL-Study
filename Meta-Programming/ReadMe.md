@@ -17,11 +17,20 @@
     
 - type_traits 库提供四个元函数计算元数据之间的关系，它们都是两参数元函数，使用::value返回bool类型的检查参数
 
-- Meta-Data Computations
+- Meta-Data Computations(1)
     - add_const<T> 返回T const
     - add_lvalue_reference<T> 对于对象或者函数类型返回左值引用，通常是T&，否则是T
     - add_rvalue_reference<T> 对于对象或者函数类型返回右值引用，通常是T&&, 否则是T
     - remove_cv<T> 移除T的顶层const和volatile修饰
+
+- Meta-Data Computations(2)
+    - make_signed<T>
+    - make_unsigned<T>
+    - integral_promotion<T>
+    - promote<T>
+    - remove_extent<T> 移除数组的最顶层维度
+    - remove_bounds<T> 同上，但非C++11标准
+    - remove_all_extents<T> 变为普通类型    
     
 ###例子
 - [Basic Intro of Meta-Programming](MetaFunction.cpp)
