@@ -5,4 +5,6 @@ add_executable(MetaFunctionForward MetaFunctionForward.cpp)
 add_executable(MetaFunctionUtilDemo MetaFunctionTool.cpp MetaFunctionTool.h)
 add_executable(TypeTraitsUsage TypeTraitsUsage.cpp MetaFunctionTool.h)
 add_executable(TypeTraitsUsageProperty TypeTraitsUsageProperty.cpp MetaFunctionTool.h)
+add_executable(MetaDataRelation MetaDataRelation.cpp MetaFunctionTool.h)
+add_executable(MetaDataComputation MetaDataComputation.cpp MetaFunctionTool.h)
 

@@ -15,6 +15,14 @@
         - 操作元数据的标准元函数： 以::type返回一个新的元数据（类型）
     - 以is或has开头的元函数都属于值元函数，其他属于标准元函数，一些有例外
     
+- type_traits 库提供四个元函数计算元数据之间的关系，它们都是两参数元函数，使用::value返回bool类型的检查参数
+
+- Meta-Data Computations
+    - add_const<T> 返回T const
+    - add_lvalue_reference<T> 对于对象或者函数类型返回左值引用，通常是T&，否则是T
+    - add_rvalue_reference<T> 对于对象或者函数类型返回右值引用，通常是T&&, 否则是T
+    - remove_cv<T> 移除T的顶层const和volatile修饰
+    
 ###例子
 - [Basic Intro of Meta-Programming](MetaFunction.cpp)
 - [Meta-Function Forward](MetaFunctionForward.cpp)
