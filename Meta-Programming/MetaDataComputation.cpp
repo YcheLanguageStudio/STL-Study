@@ -44,7 +44,27 @@ void AssertComputation2() {
     assert((is_same<metadata5, int>::value));
 }
 
+void AssertComputation3() {
+    mp_data short const metadata1;
+    mp_data mp_exec(make_signed<metadata1>) metadata2;
+    assert(mp_eval(is_const<metadata2>));
+    assert(mp_eval(is_signed<metadata2>));
+
+    assert((is_same<metadata2, signed short const>::value));
+
+    mp_data mp_exec(make_unsigned<metadata2>) metadata3;
+    assert((is_same<metadata3, unsigned short const>::value));
+
+    mp_data mp_exec(integral_promotion<metadata3>) metadata4;
+    assert((is_same<metadata4, int const>::value));   //变为int, 符号修饰消失
+
+    mp_data mp_exec(floating_point_promotion<float>) metadata5; //提升类型到double
+    mp_data mp_exec(promote<metadata5>) metadata6;
+    assert((is_same<metadata5 , metadata6 >::value)); //最大只能提升到double
+}
+
 int main() {
     AssertComputation1();
     AssertComputation2();
+    AssertComputation3();
 }
