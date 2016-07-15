@@ -8,4 +8,5 @@ add_executable(TypeTraitsUsageProperty TypeTraitsUsageProperty.cpp MetaFunctionT
 add_executable(MetaDataRelation MetaDataRelation.cpp MetaFunctionTool.h)
 add_executable(MetaDataComputation MetaDataComputation.cpp MetaFunctionTool.h)
 add_executable(MetaDataComputationOthers MetaDataComputationOthers.cpp MetaFunctionTool.h)
+add_executable(ParseFunctionMetaData ParseFunctionMetaData.cpp MetaFunctionTool.h)
 

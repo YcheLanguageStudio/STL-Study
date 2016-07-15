@@ -38,6 +38,24 @@
     - decay<T> : 先执行remove_reference<T>得到元数据U, 如果U为数组类型， 返回remove_extent<T>*， 
     若为函数类型，则结果为U*, 否则返回U。通常来说，decay<T>得到一个值类型
     
+- Function Meta Data
+    - 解析元数据的元函数function_traits<>不属于C++11标准，是一个非标准元函数，能返回多个值，
+    包括函数的参数数量/参数类型/返回类型，支持解析最多10个参数的函数
+    - function_traits<T>要求输入的元数据(tpye)，必须要满足is_function<T>::value==true，不能是
+    函数指针或者引用。如果是函数指针或引用，那么可以用remove_pointer<T>，remove_reference<T>来转换
+    类型，否则会导致编译错误，:blush:
+    - 摘要如下：   
+    ```cpp
+    template <class T>
+    sturct function_traits
+    {
+        static const std::size_t arity;  //arity意思是参数数量
+        typedef some-define result_type; //函数的返回类型
+        typedef some-define argN_type;   //返回函数第N个参数的类型
+    }
+    ```
+    - boost::result_of<>::type可以处理任意可调用类型，函数/函数指针和函数对象
+    
 ###例子
 - [Basic Intro of Meta-Programming](MetaFunction.cpp)
 - [Meta-Function Forward](MetaFunctionForward.cpp)
