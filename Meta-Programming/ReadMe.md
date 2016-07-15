@@ -67,13 +67,14 @@
 - [Meta Relation](MetaDataRelation.cpp)
 - [Function Meta Data](ParseFunctionMetaData.cpp)    
     
-###Boost的type_traits实现原理
-    - 实现比较复杂，而且使用了***预处理元编程***和一些特别的技巧
-    - 下面针对is_integral<>为例子简单阐述实现原理
-        - type_traits库里面许多值元函数都使用了元函数转发技术，把元参数转发给元函数integral_constant<>进行计算
+###Boost的type_traits实现原理  
+   - 实现比较复杂，而且使用了***预处理元编程***和一些特别的技巧
+   - 下面针对is_integral<>为例子简单阐述实现原理
+    - type_traits库里面许多值元函数都使用了元函数转发技术，把元参数转发给元函数integral_constant<>进行计算
         （这个又把元参数转发给了元函数mpl::integral_c<>）进行计算，也就是说integral_constant>是大多数值元函数
         的public基类。
-    - 类摘要：  
+    - 类摘要： 
+     
     ```cpp
     template <class T, T val>    //计算类型为T，值为val的整数
     struct integral_constant
@@ -83,14 +84,18 @@
         static const T value = val;       //以::value 返回整数值 val
         // BOOST_STATIC_CONSTANT(T, value=val)  //Could be Replaced With this Macro
     }
-    ```
+    ```   
+    
    - 因为type_traits中大部分元函数的计算结果是Bool值，因此type_traits库又特别提供了两个针对Bool元数据
     特化的无参元函数true_type和false_type   
+   
    ```cpp
    typedef integral_constant<bool, true> true_type;
    typedef integral_constant<bool, false> false_type;
-   ```
+   ```   
+   
    - is_integral<> 使用了模板特化技术，对于非整数的类型元函数   
+   
    ```cpp
    template<typename T>
    struct is_integral: boost::integral_constant<bool, false> //元函数转发，返回false
@@ -102,3 +107,6 @@
    template<>
    struct is_integral<char> : booost::integral_constant<bool, true> 
    ```
+   
+###例子
+- [Integral Constant](IntegralConstantStudy.cpp)
