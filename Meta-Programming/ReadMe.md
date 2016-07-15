@@ -110,3 +110,15 @@
    
 ###例子
 - [Integral Constant](IntegralConstantStudy.cpp)
+
+###总结
+- 模板元编程基本概念：元数据(类型)，元函数（模板类），元函数转发（通过继承，改变参数位置等应用）。
+- 主要用途：类型推导
+- 元数据：可以是整数（含bool）或任意c++类型
+- 元函数：元编程的核心，内部定义::type或者::value返回计算的结果
+- 元函数转发：通过使用public继承元函数的方式实现
+- 其他既有的库
+    - std::result_of 能够推导出调用类型（函数，函数指针，函数对象）的返回值
+    - std::unwrap_reference<T> 揭开boost::reference_wrapper的包装
+    - boost::call_traits：推导出最适合的调用参数类型
+- Traits是一个重要概念，萃取类型中重要的信息，如iterator_traits和function_traits    
