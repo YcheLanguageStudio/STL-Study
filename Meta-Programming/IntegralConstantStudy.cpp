@@ -14,4 +14,8 @@ int main() {
     BOOST_STATIC_ASSERT((integral_constant<char, 0x30>::value == '0'));
 
     BOOST_STATIC_ASSERT((integral_constant<short, 100>::value == 100));
+
+    BOOST_STATIC_ASSERT(true_type::value==true);
+
+    BOOST_STATIC_ASSERT(mp_eval(false_type)==false);
 }

@@ -84,4 +84,21 @@
         // BOOST_STATIC_CONSTANT(T, value=val)  //Could be Replaced With this Macro
     }
     ```
-       
+   - 因为type_traits中大部分元函数的计算结果是Bool值，因此type_traits库又特别提供了两个针对Bool元数据
+    特化的无参元函数true_type和false_type   
+   ```cpp
+   typedef integral_constant<bool, true> true_type;
+   typedef integral_constant<bool, false> false_type;
+   ```
+   - is_integral<> 使用了模板特化技术，对于非整数的类型元函数   
+   ```cpp
+   template<typename T>
+   struct is_integral: boost::integral_constant<bool, false> //元函数转发，返回false
+   {};
+   
+   template<>
+   struct is_integral<bool>: boost::integral_constant<bool,true>  //元函数转发，返回true
+   
+   template<>
+   struct is_integral<char> : booost::integral_constant<bool, true> 
+   ```
