@@ -32,9 +32,18 @@
     - remove_bounds<T> 同上，但非C++11标准
     - remove_all_extents<T> 变为普通类型    
     
+- Meta-Data Computations(3)
+    - conditional<b, T, U> 条件运算，类似于mpl::if_c<> 根据b的真假决定返回T或U
+    - common_type<T, ...> : 求多个类型的共通类型（类似于数字的最小共倍数）对类型的顺序由要求
+    - decay<T> : 先执行remove_reference<T>得到元数据U, 如果U为数组类型， 返回remove_extent<T>*， 
+    若为函数类型，则结果为U*, 否则返回U。通常来说，decay<T>得到一个值类型
+    
 ###例子
 - [Basic Intro of Meta-Programming](MetaFunction.cpp)
 - [Meta-Function Forward](MetaFunctionForward.cpp)
 - [Util header](MetaFunctionTool.h)
 - [Small Demo Case MetaFunction Util](MetaFunctionTool.cpp)
 - [Type Traits Value Usage](TypeTraitsUsage.cpp)
+- [Meta Computation](MetaDataComputation.cpp)
+- [Meta Computation 2](MetaDataComputationOthers.cpp)
+- [Meta Relation](MetaDataRelation.cpp)
