@@ -111,7 +111,7 @@
 - [Integral Constant](IntegralConstantStudy.cpp)
 
 ###模板元编程应用例子
-- [Conditional](Conditional.cpp) 实现[MetaFuctionTool](MetaFunctionTool.cpp)中功能  
+- [Conditional](Apps/Conditional.cpp) 实现[MetaFuctionTool](MetaFunctionTool.cpp)中功能
     - 总结：使用type_traits元函数实现明显比直接的模板特化复杂，充分展现了模板元编程的函数式本质，
 程序的实现都是通过函数的嵌套调用完成的，程序员需要在头脑中维护一个“函数的堆栈”才能搞清楚它们的调用过程。
     - 实际上conditional<>并没有左什么更多的工作，它知识对mpl::if_c的元函数转发  
@@ -122,12 +122,32 @@
     ```
     - boost.mpl里另有一个元函数eval_if<>也可以达到相同效果 
     
-- [Identity Type](IdentityType.cpp)  
+- [Identity Type](Apps/IdentityType.cpp)
     - 问题：C/C++预处理器会把逗号识别成宏参数分隔符，不能理解C++模板语法的尖括号，所以在宏里使用带有逗号的
     模板类会导致参数解析错误  
     
-- [declval](Declval.cpp)   
-
+- [declval](Apps/Declval.cpp)
+    - C++11标准中一个特别的函数模板
+    ```cpp
+    template <typename T>
+    typename add_rvalue_reference<T>::type declval();
+    ```
+    - Boost中在boost/utility/decval.hpp中实现了它
+    - type_traits里面的common_type<>使用了decval()实现，计算两个类型的代码：
+    ```cpp
+    template<typename T, typename U>
+    struct common_type<T, U>{
+        typedef decltype(decval<bool> ? decval<T>() : decval<U>()) type;
+    }
+    ```
+    - 对于更多拉稀行的共通计算,common_type<>使用了递归
+    ```cpp
+    template<typename T, typename U, typename... V>   //C++11可变参数列表
+    struct common_type<T, U, V...>
+    public:
+        typedef typename common_type<       //递归调用common_type
+            typename common_type<T,U>::type, V...>::type type;
+    ```
 
 ###总结
 - 模板元编程基本概念：元数据(类型)，元函数（模板类），元函数转发（通过继承，改变参数位置等应用）。
