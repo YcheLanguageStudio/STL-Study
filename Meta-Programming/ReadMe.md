@@ -55,8 +55,8 @@
     }
     ```
     - boost::result_of<>::type可以处理任意可调用类型，函数/函数指针和函数对象
-    
-###例子
+
+###TypeTraits使用的例子
 - [Basic Intro of Meta-Programming](MetaFunction.cpp)
 - [Meta-Function Forward](MetaFunctionForward.cpp)
 - [Util header](MetaFunctionTool.h)
@@ -65,4 +65,23 @@
 - [Meta Computation](MetaDataComputation.cpp)
 - [Meta Computation 2](MetaDataComputationOthers.cpp)
 - [Meta Relation](MetaDataRelation.cpp)
-- [Function Meta Data](ParseFunctionMetaData.cpp)
+- [Function Meta Data](ParseFunctionMetaData.cpp)    
+    
+###Boost的type_traits实现原理
+    - 实现比较复杂，而且使用了***预处理元编程***和一些特别的技巧
+    - 下面针对is_integral<>为例子简单阐述实现原理
+        - type_traits库里面许多值元函数都使用了元函数转发技术，把元参数转发给元函数integral_constant<>进行计算
+        （这个又把元参数转发给了元函数mpl::integral_c<>）进行计算，也就是说integral_constant>是大多数值元函数
+        的public基类。
+    - 类摘要：  
+    ```cpp
+    template <class T, T val>    //计算类型为T，值为val的整数
+    struct integral_constant
+    {
+        typedef integral_constant<T, val> type;  //定义自身为返回元数据
+        typedef T value_type;     //返回值的类型
+        static const T value = val;       //以::value 返回整数值 val
+        // BOOST_STATIC_CONSTANT(T, value=val)  //Could be Replaced With this Macro
+    }
+    ```
+       

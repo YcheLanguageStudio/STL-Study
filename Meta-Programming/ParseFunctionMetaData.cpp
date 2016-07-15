@@ -5,7 +5,6 @@
 //因为function_traits<>不是标准元函数，所以不能使用宏“伪关键字”来调用，
 //必须使用域操作符号直接写出内部类型定义哦
 #include "boost/type_traits.hpp"
-#include "assert.h"
 #include <iostream>
 #include "MetaFunctionTool.h"
 

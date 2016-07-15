@@ -3,8 +3,6 @@
 //
 
 #include "boost/type_traits.hpp"
-#include "assert.h"
-#include <iostream>
 #include "MetaFunctionTool.h"
 
 using namespace boost;
