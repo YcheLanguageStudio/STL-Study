@@ -1,7 +1,7 @@
 //
 // Created by cheyulin on 7/21/16.
 //
-#include "base.h"
+#include "informal_base.h"
 
 using namespace yche;
 using namespace std;
