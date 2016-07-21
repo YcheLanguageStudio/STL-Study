@@ -46,3 +46,10 @@ without the costs (and some flexibility) of dynamic polymorphism.
 This particular use of the CRTP has been called "simulated dynamic binding" by some. 
 This pattern is used extensively in the Windows ATL and WTL libraries.  
 
+###例子
+- CRTP Def
+    - [Formal Definition Header](formal_base.h)
+    - [Formal Definition Cpp](formal_algorithm.cpp)
+- Object Counter Demo
+    - [Object Counter Header](object_counter.h)
+    - [Object Counter Cpp](instance_object_counter.cpp)
