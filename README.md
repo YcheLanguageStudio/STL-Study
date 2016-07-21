@@ -11,6 +11,7 @@
     - [Allocator 内存配置器的实现，STL实现中最重要部分之一](Allocator)
 - Boost程序库探秘
     - [Meta-Programming 模板元编程一些基础知识](Meta-Programming)
+    - [Generic-Programming 泛性编程一些基础知识](Generic-Programming)
 
 ##引用
 - STL源码剖析-侯捷著
