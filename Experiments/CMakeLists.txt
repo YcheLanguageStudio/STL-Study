@@ -1,1 +1,1 @@
-add_executable(ExpStaticPoly algorithm.cpp base.h)
+add_executable(ExpStaticPoly CRTP/algorithm.cpp CRTP/base.h)
