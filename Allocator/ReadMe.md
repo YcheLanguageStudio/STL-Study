@@ -1,24 +1,14 @@
-###各种type
-- value_type
-- pointer
-- const pointer
-- reference
-- const reference
-- size_type
-- difference_type
-- rebind(一个嵌套的class template)
-- allocator()
-- allocator(const allocator&)
-- 泛化的copy constructor
-- ~allocator
-- address(reference x) const
-- address(const_reference x) const
-- allocate(size_type n, const void *=0) 第二个参数实现上可能会用来增强locality
-- deallocate(pointer p, size_type n)
-- max_size() const
-- construct(pointer p, const T&x) 相当于new ((void *)p)T(x)
-- destroy(pointer p) 相当于p->T()
-
-###Corresponding Simple Implementation
-- [YcheAllocator.h](./YcheAllocator.h)
-- [YcheAllocator.cpp](./YcheAllocator.cpp)
+##Allocator概览
+###[基本类型概念概览和无配置的实现](Basic.md)
+###具备配置力的SGI Allocator
+- SGI STL配置器与众不同，也与标准规范不同，其名称是alloc而非allocator，而且不接受任何参数。换句话说，
+如果你想要在程序中采用SGI配置器，则不能使用标准写法。    
+```cpp
+vector<int, std::allocator<int> iv;// in VC or CB
+```    
+而只能写成下面这样：    
+```cpp
+vector<int, std::alloc> iv; // in GCC
+```
+- std::allocator只是对::operator new和 ::operator delete 做一层薄薄的包装而已,
+详情请见[default allocator实现](defalloc.h)
