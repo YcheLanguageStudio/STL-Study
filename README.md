@@ -14,7 +14,8 @@
     - [Generic-Programming 泛性编程一些基础知识](Generic-Programming)
 
 - [Experiments一些小实验，学习这两本书中没有的内容](Experiments)
-    
+
 ##引用
 - STL源码剖析-侯捷著
 - Boost程序库探秘
+- Boost程序库完全开发指南-深入C++准标准库
