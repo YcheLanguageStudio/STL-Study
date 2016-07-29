@@ -36,6 +36,56 @@ delete也包含两个阶段的操作：1）调用Foo::~Foo()把对象析构，2�
  ```
 
 ###构造和析构的基本工具：constrcut() 和 destroy()
+下面是<stl_construct.h>的部分内容:    
+```cpp
+#include <new.h> //想使用 placement new ，需要先包含这个文件
+//这个construct()接受一个指针p和一个初始值value, 该函数的用途就是将初始值设定到指针所指的空间上。
+template<class T1, class T2>
+inline void constrcut(T1*p, const T2& value){
+  new (p) T1(value);  //placement new;  调用T1::T1(value)
+}
+
+//以下是destroy()第一个版本，接受一个指针
+//这很简单，直接调用该对象的析构函数就可以
+template <class T>
+inline destroy(T* pointer){
+  pointer->~T();  //调用dtor ~T()
+}
+
+//以下是destroy()第二版本，接受两个迭代器，此函数设法找出元素的数值类型
+//进而利用__type_traits<>求取适当措施
+//准备把迭代器范围内的[first,last)的所有对象都西勾掉，
+//如果是trivial_destructor就什么都不做，如果不是就析构
+//但是C++本身不直接支持对“指针所指之物”的类型判断，也不支持对“对象析构函数是否trivial”的判断
+//需要通过一些技巧来实现
+template <class ForwardIterator>
+inline void destroy(ForwardIterator first, ForwardIterator last){
+  __destory(first, last, value_type(first));
+}
+
+//判断元素的数值类别(value type)是否有trivial destructor
+template <class ForwardIterator, class T>
+inline void __destory(ForwardIterator first, ForwardIterator last, T*){
+  typedef typename __type_traits<T>::has_trivial_destructor trivial_destructor;
+  __destory_aux(first, last, trivial_destructor());
+}
+
+//如果元素的数值类型有non-trivial destructor
+template <class ForwardIterator>
+inline void __destory_aux(ForwardIterator first, ForwardIterator last, __false_type){
+  for (; first < last; first++) {
+    destroy(&* first);
+  }
+}
+
+//如果元素的数值类型有trivial destructor
+template <class ForwardIterator>
+inline void __destory_aux(ForwardIterator, ForwardIterator, __true_type){}
+
+//Speicalization
+inline void destroy(char*, char*){}
+inline void destroy(wchar_t*, wchar_t*){}
+```
 
 ###空间的配置与释放，std::alloc
 ####第一级配置器 __malloc_alloc_template   
