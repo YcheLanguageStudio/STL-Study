@@ -84,13 +84,25 @@ inline void __destory_aux(ForwardIterator, ForwardIterator, __true_type){}
 
 //Speicalization
 inline void destroy(char*, char*){}
-inline void destroy(wchar_t*, wchar_t*){}
+inline void destroy(wchar_t*, wchar_t  *){}
 ```
 
 ###空间的配置与释放，std::alloc
+- std::alloc不接受任何template参数
+- 对象构造的空间配置和对象析构后的空间释放，由<stl_alloc.h>负责，SGI对此设计哲学如下：
+  - 向system heap要求空间
+  - 考虑多线程(multi-threads)状态
+  - 考虑内存不足时候的应变策略
+  - 考虑过多的“小型区块”可能造成的内存碎片问题
+- C++内存基本配置是::operator new()和::operator delete()，相当于C的malloc()和free()  
+- 配置区块超过128bytes则认为足够大，使用一级配置器，配置器区块小于128bytes则使用memory pool整理方式
+
 ####第一级配置器 __malloc_alloc_template   
+- allocate()直接使用malloc(), deallocate()直接使用free()
+- 模拟C++的set_new_handler()处理内存不足的情况
 
 ####第二级配置器 __default_alloc_template
+- 维护16个自由链表
 
 ####空间配置相关  allocate()  deallocate()  填充free lists
 
