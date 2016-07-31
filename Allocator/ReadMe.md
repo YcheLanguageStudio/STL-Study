@@ -97,12 +97,102 @@ inline void destroy(wchar_t*, wchar_t  *){}
 - C++内存基本配置是::operator new()和::operator delete()，相当于C的malloc()和free()  
 - 配置区块超过128bytes则认为足够大，使用一级配置器，配置器区块小于128bytes则使用memory pool整理方式
 
+####New-Handler
+- 你可以要求系统在内存配置无法被满足时候，调用一个你所指定的函数，一旦::operator new无法满足时候，
+在丢出std::bad_alloc状态之前会先调用由客户端指定的处理程序。该处理历程被叫做new-handler。
+
 ####第一级配置器 __malloc_alloc_template   
 - allocate()直接使用malloc(), deallocate()直接使用free()
 - 模拟C++的set_new_handler()处理内存不足的情况
+- 详细代码如下：    
+```cpp
+#if 0
+# include <new>
+# define __THROW_BAD_ALLOC throw bad_alloc
+#elif !defined(__THROW_BAD_ALLOC)
+# include <iostream.h>
+# define __THROW_BAD_ALLOC cerr << "out of memory" << endl; exit(1)
+#endif
+
+//一般而言是thread-safe，并且对于空间的运用比较高效
+template <int inst>
+class __malloc_alloc_template{
+private:
+  //oom: out of memory
+  static void *oom_malloc(size_t);
+  static void *oom_realloc(void*, size_t);
+  static void (* __malloc_alloc_oom_handler)();
+
+public:
+  static void * allocate(size_t n){
+    void * result = malloc(n);
+    if(0 == result) result = oom_malloc(n);
+    return result;
+  }
+
+  static void deallocate(void *p, size_t){
+    free(p);
+  }
+
+  static void* reallocate(void* p, size_t, size_t new_sz){
+    void* result = realloc(p, new_sz);
+    if(0 == result) result = oom_realloc(p, new_sz);
+    return result;
+  }
+
+  //以下仿真Ｃ++的set_new_handler()，你可以通过它指定你自己的out-of-memory handler
+  static void (* set_malloc_handler(void (*f)()))(){
+    void (*old)() = __malloc_alloc_oom_handler;
+    __malloc_alloc_oom_handler = f;
+    return(old);
+  }
+
+  //malloc_alloc out-of-memory handler有待客户端指定，初值为0
+  template <int inst>
+  void (* __malloc_alloc_template<inst>::__malloc_alloc_oom_handler)() = 0;
+
+  template <int inst>
+  void * __malloc_alloc_template<inst>:oom_malloc(size_t n){
+    void (* my_malloc_handler)();
+    void * result;
+
+    for(;;){ //不断尝试释放／配置／再释放／再配置。。。
+        my_malloc_handler = __malloc_alloc_oom_handler;
+        if(0 == my_malloc_handler){
+          __THROW_BAD_ALLOC;
+        }
+        (*my_malloc_handler)(); //调用处理历程，企图释放内存
+        result = malloc(n);  //再次尝试配置内存
+        if(result) return result;
+    }
+  }
+
+  template <int inst>
+  void * __malloc_alloc_template<inst>:oom_realloc(void* p, size_t n){
+    void (* my_malloc_handler)();
+    void * result;
+    for(;;){
+      my_malloc_handler = __malloc_alloc_oom_handler;
+      if(0 == my_malloc_handler){
+        __THROW_BAD_ALLOC;
+      }
+      (*my_malloc_handler)(); //调用处理历程，企图释放内存
+      result = realloc(p, n);  //再次尝试配置内存
+      if(result) return result;
+    }
+  }
+
+}
+
+//下面直接把参数inst指定为０
+typedef __malloc_alloc_template<0> malloc_alloc;
+```
+
 
 ####第二级配置器 __default_alloc_template
-- 维护16个自由链表
+- 维护16个自由链表(free lists)，负责16种小型区块的次配置能力，内存池以malloc()配置获得，如果内存不足，转而调用
+第一级配置器（那儿有处理程序）
+- 如果需求大于128bytes，就调用第一级配置器
 
 ####空间配置相关  allocate()  deallocate()  填充free lists
 
