@@ -13,14 +13,14 @@
         - 检查元数据属性的值的元函数： 以::value返回一个bool值或一个证书
         - 操作元数据的标准元函数： 以::type返回一个新的元数据（类型）
     - 以is或has开头的元函数都属于值元函数，其他属于标准元函数，一些有例外
-    
+
 - type_traits 库提供四个元函数计算元数据之间的关系，它们都是两参数元函数，使用::value返回bool类型的检查参数
 
 - Meta-Data Computations(1)
     - add_const<T> 返回T const
     - add_lvalue_reference<T> 对于对象或者函数类型返回左值引用，通常是T&，否则是T
     - add_rvalue_reference<T> 对于对象或者函数类型返回右值引用，通常是T&&, 否则是T
-    - remove_cv<T> 移除T的顶层const和volatile修饰 
+    - remove_cv<T> 移除T的顶层const和volatile修饰
 
 - Meta-Data Computations(2)
     - make_signed<T>
@@ -30,13 +30,13 @@
     - remove_extent<T> 移除数组的最顶层维度
     - remove_bounds<T> 同上，但非C++11标准
     - remove_all_extents<T> 变为普通类型    
-    
+
 - Meta-Data Computations(3)
     - conditional<b, T, U> 条件运算，类似于mpl::if_c<> 根据b的真假决定返回T或U
     - common_type<T, ...> : 求多个类型的共通类型（类似于数字的最小共倍数）对类型的顺序由要求
-    - decay<T> : 先执行remove_reference<T>得到元数据U, 如果U为数组类型， 返回remove_extent<T>*， 
+    - decay<T> : 先执行remove_reference<T>得到元数据U, 如果U为数组类型， 返回remove_extent<T>*，
     若为函数类型，则结果为U*, 否则返回U。通常来说，decay<T>得到一个值类型
-    
+
 - Function Meta Data
     - 解析元数据的元函数function_traits<>不属于C++11标准，是一个非标准元函数，能返回多个值，
     包括函数的参数数量/参数类型/返回类型，支持解析最多10个参数的函数
@@ -65,15 +65,15 @@
 - [Meta Computation 2](MetaDataComputationOthers.cpp)
 - [Meta Relation](MetaDataRelation.cpp)
 - [Function Meta Data](ParseFunctionMetaData.cpp)    
-    
+
 ###Boost的type_traits实现原理
    - 实现比较复杂，而且使用了***预处理元编程***和一些特别的技巧
    - 下面针对is_integral<>为例子简单阐述实现原理
     - type_traits库里面许多值元函数都使用了元函数转发技术，把元参数转发给元函数integral_constant<>进行计算
         （这个又把元参数转发给了元函数mpl::integral_c<>）进行计算，也就是说integral_constant>是大多数值元函数
         的public基类。
-    - 类摘要： 
-     
+    - 类摘要：
+
     ```cpp
     template <class T, T val>    //计算类型为T，值为val的整数
     struct integral_constant
@@ -84,60 +84,48 @@
         // BOOST_STATIC_CONSTANT(T, value=val)  //Could be Replaced With this Macro
     }
     ```   
-    
+
    - 因为type_traits中大部分元函数的计算结果是Bool值，因此type_traits库又特别提供了两个针对Bool元数据
     特化的无参元函数true_type和false_type   
-   
+
    ```cpp
    typedef integral_constant<bool, true> true_type;
    typedef integral_constant<bool, false> false_type;
    ```   
-   
+
    - is_integral<> 使用了模板特化技术，对于非整数的类型元函数   
-   
+
    ```cpp
    template<typename T>
    struct is_integral: boost::integral_constant<bool, false> //元函数转发，返回false
    {};
-   
+
    template<>
    struct is_integral<bool>: boost::integral_constant<bool,true>  //元函数转发，返回true
-   
+
    template<>
-   struct is_integral<char> : booost::integral_constant<bool, true> 
+   struct is_integral<char> : booost::integral_constant<bool, true>
    ```
-   
+
 ###例子
 - [Integral Constant](IntegralConstantStudy.cpp)
 
 ###模板元编程应用例子
-<<<<<<< HEAD
-- [Conditional](Apps/Conditional.cpp) 实现[MetaFuctionTool](MetaFunctionTool.cpp)中功能  
-=======
 - [Conditional](Apps/Conditional.cpp) 实现[MetaFuctionTool](MetaFunctionTool.cpp)中功能
->>>>>>> 3705b228fc9a9f2822244a9eba082e564bea0429
     - 总结：使用type_traits元函数实现明显比直接的模板特化复杂，充分展现了模板元编程的函数式本质，
 程序的实现都是通过函数的嵌套调用完成的，程序员需要在头脑中维护一个“函数的堆栈”才能搞清楚它们的调用过程。
     - 实际上conditional<>并没有左什么更多的工作，它知识对mpl::if_c的元函数转发  
     ```cpp
     template<bool b, class T, class U>
-    struct conditional: public mpl::if_c<b, T, U>  //元函数转发 
+    struct conditional: public mpl::if_c<b, T, U>  //元函数转发
     {};
     ```
-    - boost.mpl里另有一个元函数eval_if<>也可以达到相同效果 
-    
-<<<<<<< HEAD
-- [Identity Type](Apps/IdentityType.cpp)  
-    - 问题：C/C++预处理器会把逗号识别成宏参数分隔符，不能理解C++模板语法的尖括号，所以在宏里使用带有逗号的
-    模板类会导致参数解析错误  
-    
-- [declval](Apps/Declval.cpp)   
+    - boost.mpl里另有一个元函数eval_if<>也可以达到相同效果
 
-=======
 - [Identity Type](Apps/IdentityType.cpp)
     - 问题：C/C++预处理器会把逗号识别成宏参数分隔符，不能理解C++模板语法的尖括号，所以在宏里使用带有逗号的
     模板类会导致参数解析错误  
-    
+
 - [declval](Apps/Declval.cpp)
     - C++11标准中一个特别的函数模板
     ```cpp
@@ -160,7 +148,6 @@
         typedef typename common_type<       //递归调用common_type
             typename common_type<T,U>::type, V...>::type type;
     ```
->>>>>>> 3705b228fc9a9f2822244a9eba082e564bea0429
 
 ###总结
 - 模板元编程基本概念：元数据(类型)，元函数（模板类），元函数转发（通过继承，改变参数位置等应用）。
