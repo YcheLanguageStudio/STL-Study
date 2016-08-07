@@ -14,6 +14,7 @@
     - [Generic-Programming 泛性编程一些基础知识](Generic-Programming)
 
 - [Experiments一些小实验，学习这两本书中没有的内容](Experiments)
+  - [CRTP, i.e, Curiously Recurring Template Pattern](Experiments/CRTP)
 
 ##引用
 - STL源码剖析-侯捷著
