@@ -22,7 +22,7 @@ SFIANE原则，替代失败不是错误。
 template<bool B, class T= void>  //T的缺省值是void
 struct enable_if_c{
     typedef T type;             // 默认返回类型T
-}
+};
 
 template<class T>
 struct enable_if_c<flase, T>();   // 对False特化，无::type返回，有人在Cond::value==false时候实例化不会成功
@@ -34,6 +34,38 @@ struct enable_if_c<flase, T>();   // 对False特化，无::type返回，有人�
 
 ###call_traits
 - 一个很小的泛型工具，封装了Ｃ++编写函数时候可能是“最好的”传参方式，会自动推导最高效的传递参数方式，避免出现引用的引用。
+- 某个特化，例如call_traits这个中间层可以把Ｔ&的引用类型任然定义为Ｔ&，成功避免了引用的引用错误
+- 对param_type计算的实现
+```cpp
+template <typename T, bool isp, bool b1>
+struct ct_imp
+{
+  typedef const T& param_type;
+};
 
+//Specialization For Pointer Type
+template <typename T, bool b1>
+struct ct_imp<T, true, b1>
+{
+    typedef const T param_type;
+};
+
+//Specialization For Arithmetic Type
+template <typename T, bool isp>
+struct ct_imp<T, isp, true>{
+  typedef typename ct_imp2<T, sizeof(T) <= sizeof(void*)::param_type param_type;
+};
+
+template <typename T, bool small_>
+struct ct_imp2
+{
+  typedef const T& param_type;
+};
+
+template <typename T>
+struct ct_imp2<T,true>{
+  typedef const T param_type；
+};
+```
 ###总结
 - enable_if 用于编写模板函数或者模板类

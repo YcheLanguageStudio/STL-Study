@@ -4,8 +4,20 @@
 //
 #include <boost/call_traits.hpp>
 #include <cassert>
+#include <string>
 
 using namespace boost;
+using namespace std;
+
+call_traits<string>::value_type scat(call_traits<string>::param_type s1, call_traits<string>::param_type s2) {
+    assert(std::is_reference<call_traits<string>::param_type>::value);
+    assert((std::is_same<call_traits<string>::param_type, const string &>::value));
+    return s1 + s2;
+}
+
+void demo_function() {
+    scat("1", "2");
+}
 
 template<typename T>
 class demo_class {
@@ -40,5 +52,6 @@ void test_demo_class() {
 }
 
 int main() {
+    demo_function();
     test_demo_class();
 }
