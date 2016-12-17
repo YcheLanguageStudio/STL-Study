@@ -6,6 +6,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_subdirectory(STLPuzzlingConfig)
 add_subdirectory(OtherPuzzlingPoints)
 add_subdirectory(Allocator)
+
 add_subdirectory(Meta-Programming)
-add_subdirectory(Experiments)
 add_subdirectory(Generic-Programming)
+add_subdirectory(MetaProgrammingLib)
+
+add_subdirectory(Experiments)

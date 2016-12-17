@@ -1,0 +1,1 @@
+add_executable(mpl_basics_demo mpl_basics_demo.cpp)
