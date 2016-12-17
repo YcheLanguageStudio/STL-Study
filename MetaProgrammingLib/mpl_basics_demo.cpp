@@ -67,9 +67,21 @@ void DemoBranching() {
     assert((is_same<mdata3, double>::value));
 }
 
+void DemoEvalBranching() {
+    using mdata1=eval_if_c<true, identity<int>, identity<long>>::type;
+    assert((is_same<mdata1, int>::value));
+
+    using mdata2=eval_if<false_, identity<float>, identity<double>>::type;
+    assert((is_same<mdata2, double>::value));
+
+    using mdata3= eval_if<is_integral<mdata2>, integral_promotion<mdata2>, floating_point_promotion<mdata2>>::type;
+    assert((is_same<mdata3, double>::value));
+}
+
 int main() {
     DemoIntegerUsage();
     DemoBoolUsage();
     DemoCalculation();
     DemoBranching();
+    DemoEvalBranching();
 }

@@ -9,9 +9,11 @@
     - [STLPuzzlingConfig 一些Compiler支持的特性，可见stl_config.h](STLPuzzlingConfig)
     - [OtherPuzzlingPoints 一些高级的用法，STL源码剖析中的](OtherPuzzlingPoints)
     - [Allocator 内存配置器的实现，STL实现中最重要部分之一](Allocator)
+    
 - Boost程序库探秘
     - [Meta-Programming 模板元编程一些基础知识](Meta-Programming)
     - [Generic-Programming 泛性编程一些基础知识](Generic-Programming)
+    - [mpl库的学习使用](MetaProgrammingLib)
 
 - [Experiments一些小实验，学习这两本书中没有的内容](Experiments)
   - [CRTP, i.e, Curiously Recurring Template Pattern](Experiments/CRTP)
