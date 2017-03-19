@@ -1,12 +1,16 @@
-###模板元编程简介
+### 模板元编程简介
+
 - 元程序是在编译期间执行的程序，操作的对象也不是普通的变量。因此不能使用c++运行时的关键字（if, else , for） 可用的语法非常有限
+
 - 最常用的语法
   - enum/static， 用来定义编译期间的整数常量
   - typedef/using, 最重要的元编程关键字，用来定义元数据
   - template, 元编程的“起点”， 主要用于定义元函数
   - “::”， 域作用符， 用于解析类型作用域获取计算结果（元数据）
+
 - 更高级的用法
   - lambda表达式/容器/迭代器/算法/视图等更高级的概念
+
 - TypeTraits
     - type_traits提供了一组traits类，也就是元函数，可以在编译时候确定类型（元数据通过using或typedef来使用）是否具有某些traits，
     或者为某些类型添加或移除const/volatile等修饰词，提供上百个元函数（就是模板类),主要有以下两大类
@@ -55,7 +59,8 @@
     ```
     - boost::result_of<>::type可以处理任意可调用类型，函数/函数指针和函数对象
 
-###TypeTraits使用的例子
+### TypeTraits使用的例子
+
 - [Basic Intro of Meta-Programming](MetaFunction.cpp)
 - [Meta-Function Forward](MetaFunctionForward.cpp)
 - [Util header](MetaFunctionTool.h)
@@ -66,7 +71,7 @@
 - [Meta Relation](MetaDataRelation.cpp)
 - [Function Meta Data](ParseFunctionMetaData.cpp)    
 
-###Boost的type_traits实现原理
+### Boost的type_traits实现原理
    - 实现比较复杂，而且使用了***预处理元编程***和一些特别的技巧
    - 下面针对is_integral<>为例子简单阐述实现原理
     - type_traits库里面许多值元函数都使用了元函数转发技术，把元参数转发给元函数integral_constant<>进行计算
@@ -107,10 +112,12 @@
    struct is_integral<char> : booost::integral_constant<bool, true>
    ```
 
-###例子
+### 例子
+
 - [Integral Constant](IntegralConstantStudy.cpp)
 
-###模板元编程应用例子
+### 模板元编程应用例子
+
 - [Conditional](Apps/Conditional.cpp) 实现[MetaFuctionTool](MetaFunctionTool.cpp)中功能
     - 总结：使用type_traits元函数实现明显比直接的模板特化复杂，充分展现了模板元编程的函数式本质，
 程序的实现都是通过函数的嵌套调用完成的，程序员需要在头脑中维护一个“函数的堆栈”才能搞清楚它们的调用过程。
@@ -149,7 +156,7 @@
             typename common_type<T,U>::type, V...>::type type;
     ```
 
-###总结
+### 总结
 - 模板元编程基本概念：元数据(类型)，元函数（模板类），元函数转发（通过继承，改变参数位置等应用）。
 - 主要用途：类型推导
 - 元数据：可以是整数（含bool）或任意c++类型

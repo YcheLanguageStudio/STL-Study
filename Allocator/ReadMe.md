@@ -1,8 +1,11 @@
-##Allocator概览
-###[基本类型概念概览和无配置的实现](Basic.md)
-###具备配置力的SGI Allocator
+## Allocator概览
+### [基本类型概念概览和无配置的实现](Basic.md)
+
+### 具备配置力的SGI Allocator
+
 - SGI STL配置器与众不同，也与标准规范不同，其名称是alloc而非allocator，而且不接受任何参数。换句话说，
 如果你想要在程序中采用SGI配置器，则不能使用标准写法。    
+
 ```cpp
 vector<int, std::allocator<int> iv;// in VC or CB
 ```    
@@ -13,18 +16,22 @@ vector<int, std::alloc> iv; // in GCC
 - std::allocator只是对::operator new和 ::operator delete 做一层薄薄的包装而已,
 详情请见[default allocator实现](defalloc.h)
 
-###SGI特殊的空间配置器
+### SGI特殊的空间配置器
 - 一般而言，我们习惯的C++内存配置操作和释放操作是这样的：    
 ```cpp
   class Foo {...};
   Foo* pf = new Foo; //配置内存，然后构造对象
   delete pf;  //将对象析构，然后释放内存
-```    
+```
+
 这其中的new算式包含两个阶段的操作：1）调用::operator new 配置内存， 2）调用Foo::Foo()构造对象内容。    
 delete也包含两个阶段的操作：1）调用Foo::~Foo()把对象析构，2）调用::operator delete释放内存。     
 为了精密的分工，STL allocator将这两阶段操作分开，内存配置操作由alloc::allocate负责，内存释放
 由alloc::deallocate()负责；对象构造由：：construct()负责，对象析构操作由::destroy()负责    
-- STL 标准规定，配置器定义于<memory>中，主要包含下面两个文件：   
+
+
+- STL 标准规定，配置器定义于<memory>中，主要包含下面两个文件：
+
 ```cpp
 #include <stl_alloc.h>           //负责内存空间的配置与释放  定义了一级和二级配置器。配置器名为alloc
 #include <stl_construct.h>       //负责对象内容的构造与析构  construct()   destroy()
@@ -35,8 +42,9 @@ delete也包含两个阶段的操作：1）调用Foo::~Foo()把对象析构，2�
 最佳情况下会使用C标准函数memmove()直接进行内存数据的移动
  ```
 
-###构造和析构的基本工具：constrcut() 和 destroy()
-下面是<stl_construct.h>的部分内容:    
+### 构造和析构的基本工具：constrcut() 和 destroy()
+下面是<stl_construct.h>的部分内容:
+
 ```cpp
 #include <new.h> //想使用 placement new ，需要先包含这个文件
 //这个construct()接受一个指针p和一个初始值value, 该函数的用途就是将初始值设定到指针所指的空间上。
@@ -87,7 +95,7 @@ inline void destroy(char*, char*){}
 inline void destroy(wchar_t*, wchar_t  *){}
 ```
 
-###空间的配置与释放，std::alloc
+### 空间的配置与释放，std::alloc
 - std::alloc不接受任何template参数
 - 对象构造的空间配置和对象析构后的空间释放，由<stl_alloc.h>负责，SGI对此设计哲学如下：
   - 向system heap要求空间
@@ -97,14 +105,16 @@ inline void destroy(wchar_t*, wchar_t  *){}
 - C++内存基本配置是::operator new()和::operator delete()，相当于C的malloc()和free()  
 - 配置区块超过128bytes则认为足够大，使用一级配置器，配置器区块小于128bytes则使用memory pool整理方式
 
-####New-Handler
+#### New-Handler
 - 你可以要求系统在内存配置无法被满足时候，调用一个你所指定的函数，一旦::operator new无法满足时候，
 在丢出std::bad_alloc状态之前会先调用由客户端指定的处理程序。该处理历程被叫做new-handler。
 
-####第一级配置器 __malloc_alloc_template   
+#### 第一级配置器 __malloc_alloc_template
+
 - allocate()直接使用malloc(), deallocate()直接使用free()
 - 模拟C++的set_new_handler()处理内存不足的情况
-- 详细代码如下：    
+- 详细代码如下：
+
 ```cpp
 #if 0
 # include <new>
@@ -189,16 +199,17 @@ typedef __malloc_alloc_template<0> malloc_alloc;
 ```
 
 
-####第二级配置器 __default_alloc_template
+#### 第二级配置器 __default_alloc_template
+
 - 维护16个自由链表(free lists)，负责16种小型区块的次配置能力，内存池以malloc()配置获得，如果内存不足，转而调用
 第一级配置器（那儿有处理程序）
 - 如果需求大于128bytes，就调用第一级配置器
 
-####空间配置相关  allocate()  deallocate()  填充free lists
+#### 空间配置相关  allocate()  deallocate()  填充free lists
 
-####内存池
+#### 内存池
 
-###内存处理基本工具
+### 内存处理基本工具
 - un_initialized_copy
 - un_initialized_fill
 - un_initialized_fill_n

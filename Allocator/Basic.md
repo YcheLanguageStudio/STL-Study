@@ -1,5 +1,5 @@
-##Basic Concepts
-###各种type
+## Basic Concepts
+### 各种type
 - value_type
 - pointer
 - const pointer
@@ -20,6 +20,6 @@
 - construct(pointer p, const T&x) 相当于new ((void *)p)T(x)
 - destroy(pointer p) 相当于p->T()
 
-###Corresponding Simple Implementation
+### Corresponding Simple Implementation
 - [YcheAllocator.h](./YcheAllocator.h)
 - [YcheAllocator.cpp](./YcheAllocator.cpp)

@@ -1,12 +1,16 @@
-#STL-Study
-##Build
+# STL-Study
+
+## Build
+
 如果需要测试的话，请用cmake加make工具自行build。我的环境是fedora23, gcc5.x, cmake 3.5,
  boost请用包管理器安装`boost`和`boost-dev*`。  
 
-##Attention
+## Attention
+
 详细内容可以看各个目录下的`ReadMe.md`。
 
-##Content
+## Content
+
 - STL源码剖析
  
 content | detail
@@ -29,7 +33,7 @@ content | detail
 --- | ---
 [CRTP](Experiments/CRTP) | Curiously Recurring Template Pattern
 
-##Related Books
+## Related Books
 
 book name | info
 --- | ---
